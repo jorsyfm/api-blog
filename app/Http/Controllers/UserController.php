@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use App\Helpers\JwtAuth;
 
 class UserController extends Controller {
 
@@ -73,7 +74,8 @@ class UserController extends Controller {
 
     // Login
     public function login(Request $request) {
-        // return "Adios";
+        $jwtAuth = new JwtAuth();
+        return $jwtAuth->signup();
     }
 
 }
