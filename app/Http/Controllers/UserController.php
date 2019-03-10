@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller {
-    
+
     // Register
     public function register(Request $request) {
         // return "Hola".$request['name'].$request->input('name');
@@ -25,7 +26,7 @@ class UserController extends Controller {
             $validate = \Validator::make($params_array, [
                 'name' => 'required|alpha',
                 'surname' => 'required|alpha',
-                'email' => 'required|email',
+                'email' => 'required|email|unique:users',
                 'password' => 'required'
             ]);
 
@@ -39,8 +40,17 @@ class UserController extends Controller {
             } else {
 
                 // Cifrar la contraseña
-                // Conprobar si el usuario existe
+                $params_array['password'] = password_hash($params->password, PASSWORD_BCRYPT, ['cost' => 4]);
+
                 // Crear usuario
+                $user = new User;
+                $user->name = $params_array['name'];
+                $user->surname = $params_array['surname'];
+                $user->email = $params_array['email'];
+                $user->password = $params_array['password'];
+                $user->role = 'ROLE_USER';
+
+                $user->save();
 
                 // Usuario creado
                 $data = array(
