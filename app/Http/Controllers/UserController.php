@@ -76,14 +76,15 @@ class UserController extends Controller {
     // Login
     public function login(Request $request) {
 
+        // Leer request
+        $json_data = $request->input('json', null);
+        $data = json_decode($json_data, true); // Array
+
         $jwtAuth = new JwtAuth();
 
-        $email = 'jorsy.fm@gmail.com';
-        $password = '12345678';
+        $data['password'] = hash('sha256',$data['password']);
 
-        $password = hash('sha256',$password);
-
-        return response()->json($jwtAuth->signup($email,$password,true),200);
+        return response()->json($jwtAuth->signup($data['email'],$data['password'],true),200);
     }
 
 }
