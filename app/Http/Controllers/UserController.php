@@ -41,18 +41,18 @@ class UserController extends Controller {
             } else {
 
                 // Cifrar la contraseña
-                $params_array['password'] = hash('sha256',$params_array['password']);
-                // $params_array['password'] = password_hash($params->password, PASSWORD_BCRYPT, ['cost' => 4]);
+                $params_array['password'] = password_hash($params->password, PASSWORD_BCRYPT, ['cost' => 4]);
 
                 // Crear usuario
-                $user = new User;
+                $user = new User();
                 $user->name = $params_array['name'];
                 $user->surname = $params_array['surname'];
                 $user->email = $params_array['email'];
                 $user->password = $params_array['password'];
-                $user->role = 'ROLE_USER';
 
-                $user->save();
+                var_dump($user);
+
+                die();
 
                 // Usuario creado
                 $data = array(
