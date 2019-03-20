@@ -41,7 +41,7 @@ class UserController extends Controller {
             } else {
 
                 // Cifrar la contraseña
-                $params_array['password'] = password_hash($params->password, PASSWORD_BCRYPT, ['cost' => 4]);
+                $params_array['password'] = hash('sha256',$params->password);
 
                 // Crear usuario
                 $user = new User();
@@ -50,9 +50,8 @@ class UserController extends Controller {
                 $user->email = $params_array['email'];
                 $user->password = $params_array['password'];
 
-                var_dump($user);
-
-                die();
+                // Guardar usuario en la DB
+                $user->save();
 
                 // Usuario creado
                 $data = array(
@@ -80,11 +79,30 @@ class UserController extends Controller {
         $json_data = $request->input('json', null);
         $data = json_decode($json_data, true); // Array
 
-        $jwtAuth = new JwtAuth();
+        // Validar email y password
+        $validate = \Validator::make($data, [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
-        $data['password'] = hash('sha256',$data['password']);
+        if ($validate->fails()) {
+            $response = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'El usuario no se ha podido identificar',
+                'errors' => $validate->errors()
+            );
+        } else {
+            $jwtAuth = new JwtAuth();
+            $data['password'] = hash('sha256',$data['password']);
+            if (!empty($data['gettoken'])) {
+                $response = $jwtAuth->signup($data['email'],$data['password'],true);
+            } else {
+                $response = $jwtAuth->signup($data['email'],$data['password']);
+            }
+        }
 
-        return response()->json($jwtAuth->signup($data['email'],$data['password'],true),200);
+        return response()->json($response,200);
     }
 
 }

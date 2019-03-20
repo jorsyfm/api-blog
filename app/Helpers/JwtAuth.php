@@ -44,6 +44,7 @@ class JwtAuth{
             // JWT token, llave(definida en el constructor), tipo de encriptado (opcional)
             $jwt = JWT::encode($token, $this->key, 'HS256');
             $decoded = JWT::decode($jwt, $this->key, ['HS256']);
+
             // Devoler datos del usuario(encriptados) o el token
             if(is_null($getToken)) {
                 $data =  $jwt;
@@ -58,5 +59,12 @@ class JwtAuth{
         }
 
         return $data;
+    }
+
+    // Comprobar si el Token es correcto
+    public function checkToken($jwt, $getIdentity = false) {
+        $auth = false;
+
+        $decoded = JWT::decode($jwt, $this->key, ['HS256']);
     }
 }
