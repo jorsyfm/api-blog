@@ -95,7 +95,7 @@ class UserController extends Controller {
         } else {
             $jwtAuth = new JwtAuth();
             $data['password'] = hash('sha256',$data['password']);
-            if (!empty($data['gettoken'])) {
+            if ( !empty($data['gettoken']) ) {
                 $response = $jwtAuth->signup($data['email'],$data['password'],true);
             } else {
                 $response = $jwtAuth->signup($data['email'],$data['password']);
