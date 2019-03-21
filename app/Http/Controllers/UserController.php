@@ -105,4 +105,15 @@ class UserController extends Controller {
         return response()->json($response,200);
     }
 
+    public function update(Request $request) {
+        
+        // Recibir token
+        $token = $request->header('Authorization');
+        $jwtAuth = new \JwtAuth();
+        $checkToken = $jwtAuth->checkToken($token);
+
+        return response()->json($checkToken);
+
+    }
+
 }
