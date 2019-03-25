@@ -105,22 +105,19 @@ class UserController extends Controller {
         return response()->json($response,200);
     }
 
-    public function update(Request $request) {
-
-        // Saber si el usuario está Logueado
-        // Recibir token
-        $token = $request->header('Authorization');
-        $jwtAuth = new \JwtAuth();
-        $checkToken = $jwtAuth->checkToken($token);
+    // Actualizar información
+    public function update(Request $request) {        
 
         // Recibir datos por Post
         $json_data = $request->input('json', null);
         $params = json_decode($json_data,true); // Array
 
         // Actualizar Usuario
-        if ($checkToken && !empty($params)) {
+        if (!empty($params)) {
 
             // Obtener datos del usuario identificado
+            $token = $request->header('Authorization');
+            $jwtAuth = new \JwtAuth();
             $user = $jwtAuth->checkToken($token,true);
 
             // Validar datos
@@ -159,6 +156,33 @@ class UserController extends Controller {
 
         return response()->json($response,$response['code']);
 
+    }
+
+    // Subir imágen
+    public function upload(Request $request) {
+        // Recibir datos
+        $image = $request->file('file0');
+
+        // Guardar imagen
+        if ($image) {
+            $image_name = time().$image->getClientOriginalName();
+            \Storage::disk('users')->put($image_name, \File::get($image));
+            // Status correcto
+            $response = array(
+                'code' => 200,
+                'image' => $image_name,
+                'status' => 'success'
+            );
+        } else {
+            // Status error
+            $response = array(
+                'code' => 200,
+                'status' => 'error',
+                'message' => 'Error al subir imagen'
+            );
+        }
+        
+        return response()->json($response,$response['code']);
     }
 
 }

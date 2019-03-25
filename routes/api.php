@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Middleware\ApiAuthMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/register', 'UserController@register');
 Route::post('/login', 'UserController@login');
-Route::put('/user/update', 'UserController@update');
+Route::middleware(ApiAuthMiddleware::class)->put('/user/update', 'UserController@update');
+Route::middleware(ApiAuthMiddleware::class)->post('/user/upload', 'UserController@upload');
