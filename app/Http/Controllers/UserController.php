@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use App\Helpers\JwtAuth;
+use Illuminate\Http\Response;
 
 class UserController extends Controller {
 
@@ -187,6 +188,26 @@ class UserController extends Controller {
         }
         
         return response()->json($response,$response['code']);
+    }
+
+    // Devolver avatar de un usuario
+    public function getImage($filename) {
+        // Saber si existe el archivo
+        $isset = \Storage::disk('users')->exists($filename);
+
+        if ($isset) {
+            // Traer archivo
+            $file = \Storage::disk('users')->get($filename);
+            return new Response($file, 200);
+        } else {
+            $response = array(
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Error, la imagen no existe'
+            );
+
+            return response()->json($response, $response['code']);
+        }
     }
 
 }

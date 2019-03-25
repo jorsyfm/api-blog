@@ -22,3 +22,4 @@ Route::post('/register', 'UserController@register');
 Route::post('/login', 'UserController@login');
 Route::middleware(ApiAuthMiddleware::class)->put('/user/update', 'UserController@update');
 Route::middleware(ApiAuthMiddleware::class)->post('/user/upload', 'UserController@upload');
+Route::get('/user/avatar/{filename}', 'UserController@getImage');
