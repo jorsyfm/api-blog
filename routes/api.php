@@ -18,9 +18,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Usuarios
 Route::post('/register', 'UserController@register');
 Route::post('/login', 'UserController@login');
 Route::middleware(ApiAuthMiddleware::class)->put('/user/update', 'UserController@update');
 Route::middleware(ApiAuthMiddleware::class)->post('/user/upload', 'UserController@upload');
 Route::get('/user/avatar/{filename}', 'UserController@getImage');
 Route::get('/user/detail/{id}', 'UserController@detail');
+
+// Categorías
+Route::resource('/category', 'CategoryController');
+
+// Post
+Route::resource('/post', 'PostController');
