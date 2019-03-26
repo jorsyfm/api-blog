@@ -118,7 +118,7 @@ class UserController extends Controller {
 
             // Obtener datos del usuario identificado
             $token = $request->header('Authorization');
-            $jwtAuth = new \JwtAuth();
+            $jwtAuth = new JwtAuth();
             $user = $jwtAuth->checkToken($token,true);
 
             // Validar datos
