@@ -30,4 +30,6 @@ Route::get('/user/detail/{id}', 'UserController@detail');
 Route::resource('/category', 'CategoryController');
 
 // Post
+Route::post('/post/upload', 'PostController@upload');
+Route::get('/post/image/{filename}', 'PostController@getImage');
 Route::resource('/post', 'PostController');
