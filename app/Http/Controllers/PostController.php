@@ -13,7 +13,7 @@ class PostController extends Controller {
      * Constructor para verificar Token en controladores
      */
     public function __construct() {
-        $this->middleware('api.auth', ['except' => ['index', 'show']]);
+        $this->middleware('api.auth', ['except' => ['index', 'show', 'getPostByCategory', 'getPostByUser']]);
     }
 
     /**
@@ -287,6 +287,23 @@ class PostController extends Controller {
         }
 
         return response()->json($response, $response['code']);
+    }
+
+    /**
+     * Get Post por categoría
+     */
+    public function getPostByCategory($id) {
+        $posts = Post::where('category_id',$id)->get();
+        return new response($posts, 200);
+    }
+
+    /**
+     * Get Post por usuario
+     */
+    public function getPostByUser($id){
+        // Saber si existe el usuario
+        $posts = Post::where('user_id', $id)->get();
+        return new response($posts, 200);
     }
 
     /**
