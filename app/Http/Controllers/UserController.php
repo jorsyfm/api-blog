@@ -48,6 +48,7 @@ class UserController extends Controller {
                 $user = new User();
                 $user->name = $params_array['name'];
                 $user->surname = $params_array['surname'];
+                $user->role = 'USER';
                 $user->email = $params_array['email'];
                 $user->password = $params_array['password'];
 
